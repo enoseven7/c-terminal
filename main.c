@@ -28,6 +28,11 @@ void shell_loop(char** env)
     // printf("Input: %s", input);
     
     args = parse_input(input);
+
+    for (size_t i = 0; args[i]; i++)
+    {
+      printf("Args: %s", args[i]);
+    }
   }
 }
 
