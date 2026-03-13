@@ -1,9 +1,10 @@
 TARGET = eno
-OBJ = main.c input_parser.c
+OBJ = main.c input_parser.c helpers.c
 CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
 all:
-	$(CC) -o $(TARGET) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
 clean:
 	rm -f *-o 
 fclean: clean
