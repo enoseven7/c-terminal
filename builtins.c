@@ -19,11 +19,62 @@ int command_cd(char **args, char *init_dir)
 }
 int command_pwd()
 {
-    char cwd[MAX_PATH];
-    getcwd(cwd, sizeof(cwd));
-    printf("%s\n", cwd);
+    char* cwd = NULL;
+
+    //use dynamic allocation
+    cwd = getcwd(NULL, 0);
+    if(cwd != NULL)
+    {
+        printf("%s\n", cwd);
+        free(cwd);
+    } else {
+        perror("getcwd");
+    }
     return 0;
 }
-int command_echo(char** args, char** env);
+
+//echo Hello World, echo -n Hello,echo $PATH
+int command_echo(char** args, char** env)
+{
+    (void) env;
+    int newline = 1; // default echo has newline
+    size_t i = 1; //skipping the -n
+
+    if(args[1] != NULL && my_strcmp(args[i], "-n") == 0 )
+    {
+        newline = 0;
+        i++;
+    }
+
+    // process remaining args
+
+    for(; args[i]; i++)
+    {
+        if(args[i][0] == '$')
+        {
+            char* value = getenv(args[i] + 1); //skip the $ and get var
+            if (value)
+            {
+                printf("%s", value);
+            } else {
+                printf("");
+            }
+        } else {
+            printf("%s", args[i]);
+        }
+
+        if(args[i + 1] != NULL)
+        {
+            printf(" ");
+        }
+
+    }
+
+    if(newline == 1)
+    {
+        printf("\n");
+    }
+    return 0;
+}
 int command_env(char **env);
 int command_which(char **args, char **env);
